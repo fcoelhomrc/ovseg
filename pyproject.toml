@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ovseg"
+version = "1.0"
+description = "A deep learning based library for ovarian cancer segmentation"
+authors = [
+    { name = "Thomas Buddenkotte", email = "thomasbuddenkotte@googlemail.com" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "torch>=1.7.0",
+    "tqdm",
+    "scikit-image>=0.14",
+    "scipy",
+    "numpy",
+    "nibabel",
+    "rt_utils",
+]
+
+[project.urls]
+Homepage = "https://github.com/ThomasBudd/ovseg"
+
+[project.scripts]
+ovseg_inference = "ovseg.run.run_inference:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
