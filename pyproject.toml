@@ -16,6 +16,7 @@ dependencies = [
     "nibabel",
     "rt_utils",
     "requests",
+    "h5py",
 ]
 
 [project.urls]
