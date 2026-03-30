@@ -142,10 +142,10 @@ def sliding_window(
             for i, (z, x, y) in enumerate(zxy_batch):
                 embeddings_dict["coords"].append((x, y, z))
                 embeddings_dict["embeddings"]["bottleneck"].append(
-                    emb_dict["bottleneck"][i]
+                    emb_dict["bottleneck"][i].cpu().detach().numpy()
                 )
                 embeddings_dict["embeddings"]["before_bottleneck"].append(
-                    emb_dict["before_bottleneck"][i]
+                    emb_dict["before_bottleneck"][i].cpu().detach().numpy()
                 )
 
             for i, (z, x, y) in enumerate(zxy_batch):
