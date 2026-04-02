@@ -142,10 +142,10 @@ def sliding_window(
             for i, (z, x, y) in enumerate(zxy_batch):
                 embeddings_dict["coords"].append((x, y, z))
                 embeddings_dict["embeddings"]["bottleneck"].append(
-                    emb_dict["bottleneck"][i].cpu().detach().numpy()
+                    emb_dict["bottleneck"][i].cpu().detach()
                 )
                 embeddings_dict["embeddings"]["before_bottleneck"].append(
-                    emb_dict["before_bottleneck"][i].cpu().detach().numpy()
+                    emb_dict["before_bottleneck"][i].cpu().detach()
                 )
 
             for i, (z, x, y) in enumerate(zxy_batch):
@@ -233,7 +233,8 @@ def evaluate_embeddings_from_seg_model(im, spacing, model, fast=False):
             ]
         ),
         dim=0,
-    )
+    ).numpy()
+
     before_bottleneck_emb_avg = torch.mean(
         torch.stack(
             [
@@ -242,7 +243,7 @@ def evaluate_embeddings_from_seg_model(im, spacing, model, fast=False):
             ]
         ),
         dim=0,
-    )
+    ).numpy()
 
     embeddings_result = {
         "patch_size": embeddings_dict["patch_size"],
