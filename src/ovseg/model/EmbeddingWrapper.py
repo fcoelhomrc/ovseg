@@ -29,7 +29,11 @@ def patched_forward(self, xb):
 
     # xb_list[-1] is the feature map just before the bottleneck block
     xb = self.blocks_down[-1](xb)
-    embeddings = {"bottleneck": xb, "before_bottleneck": xb_list[-1]}
+    # we apply global pooling to get 1 embedding per input
+    embeddings = {
+        "bottleneck": F.adaptive_avg_pool3d(xb, 1).squeeze(),
+        "before_bottleneck": F.adaptive_avg_pool3d(xb_list[-1], 1).squeeze(),
+    }
     logs_list.append(self.all_logits[-1](xb))
 
     for i in range(self.n_stages - 2, -1, -1):
@@ -225,6 +229,7 @@ def evaluate_embeddings_from_seg_model(im, spacing, model, fast=False):
         pred_list.append(pred)
         embeddings_dict_per_ensemble.append(embeddings_dict)
 
+    # convert to numpy after doing all manipulations
     bottleneck_emb_avg = torch.mean(
         torch.stack(
             [
