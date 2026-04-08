@@ -31,9 +31,17 @@ def patched_forward(self, xb):
     xb = self.blocks_down[-1](xb)
     # we apply global pooling to get 1 embedding per input
     embeddings = {
-        "bottleneck": F.adaptive_avg_pool3d(xb, 1).squeeze(),
-        "before_bottleneck": F.adaptive_avg_pool3d(xb_list[-1], 1).squeeze(),
+        "bottleneck": F.adaptive_avg_pool3d(xb, 1).flatten(1),
+        "before_bottleneck": F.adaptive_avg_pool3d(xb_list[-1], 1).flatten(1),
     }
+
+    try:
+        print(
+            f"Embeddings: bottleneck = {embeddings['bottleneck'].shape}, before bottleneck = {embeddings['before_bottleneck'].shape}"
+        )
+    except Exception as error:
+        print(f"Something went wrong with embeddings: {error}, {embeddings}")
+
     logs_list.append(self.all_logits[-1](xb))
 
     for i in range(self.n_stages - 2, -1, -1):
